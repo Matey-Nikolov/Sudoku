@@ -22,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     TextView[] buttons = new TextView[11];
 
-    boolean hasSelected = false;
+    boolean hasSelected = true;
 
-    TextView selected = null; // "";
+    TextView selectedText = null; // "";
     String getTextNumber = "";
     String deleted = "";
 
@@ -39,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
                 //https://www.folkstalk.com/tech/android-get-resource-id-by-string-with-example/
                 int id = getResources().getIdentifier("textView" + col + "_" + row, "id", getPackageName());
                 TextView current = findViewById(id);
+
+                current.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                            selectedText = current;
+                           // current.setText(selectedText.getText());
+                            getTextNumber = current.getText().toString();
+                    }
+
+                });
+
                 board[row][col] = current;
 
                 getTextNumber = current.getText().toString();
@@ -47,39 +58,51 @@ public class MainActivity extends AppCompatActivity {
                 }else {
                     numberBoard[row][col] = Integer.parseInt(getTextNumber);
                 }
-
             }
         }
 
 
-        Find();
+       Find();
         Edit();
-        Deleted();
 
-        int number;
-        String numberString;
+        // Deleted();
+    }
 
-        if(solveBoard(numberBoard)){
-            for(int row = 0; row < 9; row++){
-                for(int col = 0; col < 9; col++){
+    protected void Find(){
+        int id = getResources().getIdentifier("buttonSolve", "id", getPackageName());
+        TextView currentBtn = findViewById(id);
 
-                    TextView current;
+        currentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                solveBoard(numberBoard);
 
-                    number = numberBoard[row][col];
-                    numberString = Integer.toString(number);
-                    current = board[row][col];
+                int number;
+                String numberString;
 
+                if(solveBoard(numberBoard)){
+                    for(int row = 0; row < 9; row++){
+                        for(int col = 0; col < 9; col++){
 
-                    current.setText(numberString);
-                    System.out.println(current.getText());
+                            TextView current;
 
+                            number = numberBoard[row][col];
+                            numberString = Integer.toString(number);
+                            current = board[row][col];
+
+                            current.setText(numberString);
+                            System.out.println(current.getText());
+
+                        }
+                    }
+                }
+                else {
+                    System.out.println("No solution");
                 }
             }
-        }
-        else {
-            System.out.println("Works");
+        });
 
-        }
+
     }
 
     protected boolean solveBoard(int[][] numberBoard){
@@ -146,127 +169,28 @@ public class MainActivity extends AppCompatActivity {
         return  false;
     }
 
-
-
-    /*
-    protected void Check(TextView current) {
-
-        TextView currentPrev;
-        getColumnsNumbers = new ArrayList<>();
-        getRowsNumbers = new ArrayList<>();
-        //String currentStringPrev;
-
-       // TextView currentNext;
-      //  String currentStringNext;
-
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-
-                if (board[row][col] == current){
-                    getRow = row;
-                    getCol = col;
-                }
-            }
-        }
-        System.out.println(getRow);
-
-        for (int i = 0; i < 9; i++) {
-
-            currentPrev = board[getRow][i];
-          //  currentNext = board[getRow][i++];
-
-
-
-           // currentStringPrev = currentPrev.getText().toString();
-           // currentStringNext =  currentNext.getText().toString();
-
-            getRowsNumbers.add(currentPrev.getText().toString());
-        }
-
-        System.out.println(getRowsNumbers);
-
-        for (int j = 0; j < 9; j++) {
-            currentPrev = board[j][getCol];
-
-           // currentPrev.setBackgroundResource(R.drawable.borderselect);
-
-            getColumnsNumbers.add(currentPrev.getText().toString());
-        }
-
-        System.out.println(getColumnsNumbers);
-
-        System.out.println(getRow);
-        System.out.println(getCol);
-
-
-        matrix3x3[0][0] = board[getRow][getCol];
-        matrix3x3[0][1] = board[getRow][getCol];
-        matrix3x3[0][2] = board[getRow][getCol];
-
-        matrix3x3[1][0] = board[getRow][getCol];
-        matrix3x3[1][1] = board[getRow][getCol];
-        matrix3x3[1][2] = board[getRow][getCol];
-
-        matrix3x3[2][0] = board[getRow][getCol];
-        matrix3x3[2][1] = board[getRow][getCol];
-        matrix3x3[2][2] = board[getRow][getCol];
-
-    }
-*/
-    protected void Deleted(){
-        int id = getResources().getIdentifier("button9", "id", getPackageName());
-        TextView currentBtn = findViewById(id);
-
-        currentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (hasSelected) {
-                    selected.setText(deleted);
-                    hasSelected = false;
-                }
-            }
-        });
-    }
-
     protected void Edit() {
-        int id = getResources().getIdentifier("button10", "id", getPackageName());
-        TextView currentBtn = findViewById(id);
 
-        currentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (hasSelected){
-                    hasSelected = false;
-                    //checkSelect = true;
-                }
-            }
-        });
-    }
+        for(int i = 1; i <= 9; i++) {
 
-    protected void Find(){
-
-
-
-        for (int j = 0; j < 9; j++) {
-            int id = getResources().getIdentifier("button" + j, "id", getPackageName());
+            int id = getResources().getIdentifier("button" + i, "id", getPackageName());
             TextView currentBtn = findViewById(id);
 
+            currentBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-            if(id == 11){
+                    selectedText.setText(currentBtn.getText());
 
-            }else {
-                currentBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (hasSelected) {
-                          //  checkSelect = false;
-                            selected.setText(currentBtn.getText());
-                        }
-                    }
-                });
-            }
-            buttons[j] = currentBtn;
+                    System.out.println(selectedText.getText());
+
+
+                    //if (hasSelected){
+                    //    hasSelected = false;
+                        //checkSelect = true;
+                  //  }
+                }
+            });
         }
-
     }
 }
