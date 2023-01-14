@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     String getTextNumber = "";
     String deleted = "";
 
+    int getRow;
+    int getCol;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,9 +45,13 @@ public class MainActivity extends AppCompatActivity {
                 current.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                            selectedText = current;
-                           // current.setText(selectedText.getText());
-                            getTextNumber = current.getText().toString();
+                        selectedText = current;
+
+
+                        if(search(board, selectedText)){
+                            System.out.println(selectedText);
+                            current.setText(selectedText.getText());
+                        }
                     }
 
                 });
@@ -61,14 +67,25 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
-       Find();
-        Edit();
-
-        // Deleted();
+        find();
     }
 
-    protected void Find(){
+    protected boolean search(TextView[][] board, TextView searchTextView){
+
+        for (int i = 0; i < 9; i++){
+            for (int j = 0; j < 9; j++){
+                if(board[i][j] == searchTextView){
+                    getRow = i;
+                    getCol = j;
+                    edit(); /////////////////////////////////////////////////////
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    protected void find(){
         int id = getResources().getIdentifier("buttonSolve", "id", getPackageName());
         TextView currentBtn = findViewById(id);
 
@@ -169,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         return  false;
     }
 
-    protected void Edit() {
+    protected void edit() {
 
         for(int i = 1; i <= 9; i++) {
 
@@ -184,11 +201,9 @@ public class MainActivity extends AppCompatActivity {
 
                     System.out.println(selectedText.getText());
 
+                    getTextNumber = selectedText.getText().toString();
 
-                    //if (hasSelected){
-                    //    hasSelected = false;
-                        //checkSelect = true;
-                  //  }
+                    numberBoard[getRow][getCol] = Integer.parseInt(getTextNumber);
                 }
             });
         }
