@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                         if(search(board, selectedText)){
-                            System.out.println(selectedText);
+                          //  System.out.println(selectedText);
                             current.setText(selectedText.getText());
                         }
                     }
@@ -68,6 +68,33 @@ public class MainActivity extends AppCompatActivity {
         }
 
         find();
+        clear();
+    }
+
+    protected void clear(){
+        int id = getResources().getIdentifier("buttonClear", "id", getPackageName());
+        TextView currentBtn = findViewById(id);
+
+        currentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                for (int row = 0; row < 9; row++) {
+                    for (int col = 0; col < 9; col++) {
+                        numberBoard[row][col] = 0;
+
+                        int id = getResources().getIdentifier("textView" + col + "_" + row, "id", getPackageName());
+                        TextView setNull = findViewById(id);
+                        setNull.setBackgroundResource(R.drawable.border);
+
+                        setNull.setText("");
+                        board[row][col] = setNull;
+                    }
+                }
+                  System.out.println(selectedText);
+
+            }
+        });
     }
 
     protected boolean search(TextView[][] board, TextView searchTextView){
@@ -192,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
             int id = getResources().getIdentifier("button" + i, "id", getPackageName());
             TextView currentBtn = findViewById(id);
+            selectedText.setBackgroundResource(R.drawable.select_cell);
 
             currentBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -199,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
                     selectedText.setText(currentBtn.getText());
 
-                    System.out.println(selectedText.getText());
+                    //System.out.println(selectedText.getText());
 
                     getTextNumber = selectedText.getText().toString();
 
