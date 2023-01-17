@@ -1,32 +1,18 @@
 package com.example.sudoku;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     TextView[][] board = new TextView[9][9];
     int[][] numberBoard = new int[9][9];
 
-    TextView[] buttons = new TextView[11];
-
-    boolean hasSelected = true;
-
     TextView selectedText = null; // "";
     String getTextNumber = "";
-    String deleted = "";
 
     int getRow;
     int getCol;
@@ -47,9 +33,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         selectedText = current;
 
-
                         if(search(board, selectedText)){
-                          //  System.out.println(selectedText);
                             current.setText(selectedText.getText());
                         }
                     }
@@ -91,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
                         board[row][col] = setNull;
                     }
                 }
-                  System.out.println(selectedText);
-
             }
         });
     }
@@ -104,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 if(board[i][j] == searchTextView){
                     getRow = i;
                     getCol = j;
-                    edit(); /////////////////////////////////////////////////////
+                    edit();
                     return true;
                 }
             }
@@ -135,13 +117,18 @@ public class MainActivity extends AppCompatActivity {
                             current = board[row][col];
 
                             current.setText(numberString);
-                            System.out.println(current.getText());
+                            //System.out.println(current.getText());
 
                         }
                     }
                 }
                 else {
                     System.out.println("No solution");
+
+                    int id = getResources().getIdentifier("textView1", "id", getPackageName());
+                    TextView currentText = findViewById(id);
+
+                    currentText.setText("No solution");
                 }
             }
         });
@@ -168,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
         return  true;
     }
 
@@ -226,8 +212,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     selectedText.setText(currentBtn.getText());
-
-                    //System.out.println(selectedText.getText());
 
                     getTextNumber = selectedText.getText().toString();
 
